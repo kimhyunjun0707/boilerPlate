@@ -1,0 +1,64 @@
+{
+  "name": "apps/boilerplate/src/server",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/boilerplate/src/server/src",
+  "projectType": "application",
+  "targets": {
+    "build": {
+      "executor": "@nx/webpack:webpack",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "target": "node",
+        "compiler": "tsc",
+        "outputPath": "dist/apps/boilerplate/src/server",
+        "main": "apps/boilerplate/src/server/src/main.ts",
+        "tsConfig": "apps/boilerplate/src/server/tsconfig.app.json",
+        "assets": ["apps/boilerplate/src/server/src/assets"],
+        "isolatedConfig": true,
+        "webpackConfig": "apps/boilerplate/src/server/webpack.config.js"
+      },
+      "configurations": {
+        "development": {},
+        "production": {}
+      }
+    },
+    "serve": {
+      "executor": "@nx/js:node",
+      "defaultConfiguration": "development",
+      "options": {
+        "buildTarget": "apps/boilerplate/src/server:build"
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "apps/boilerplate/src/server:build:development"
+        },
+        "production": {
+          "buildTarget": "apps/boilerplate/src/server:build:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/boilerplate/src/server/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/boilerplate/src/server/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    }
+  },
+  "tags": []
+}

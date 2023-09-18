@@ -1,0 +1,101 @@
+{
+  "name": "apps/boilerplate/src/client",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "boilerplate",
+  "sourceRoot": "apps/boilerplate/src/client/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:webpack-browser",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/boilerplate/src/client",
+        "index": "apps/boilerplate/src/client/src/index.html",
+        "main": "apps/boilerplate/src/client/src/main.ts",
+        "polyfills": ["zone.js"],
+        "tsConfig": "apps/boilerplate/src/client/tsconfig.app.json",
+        "assets": [
+          "apps/boilerplate/src/client/src/favicon.ico",
+          "apps/boilerplate/src/client/src/assets"
+        ],
+        "styles": ["apps/boilerplate/src/client/src/styles.scss"],
+        "scripts": []
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
+          "extractLicenses": false,
+          "sourceMap": true,
+          "namedChunks": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "executor": "@nx/angular:webpack-dev-server",
+      "configurations": {
+        "production": {
+          "browserTarget": "apps/boilerplate/src/client:build:production"
+        },
+        "development": {
+          "browserTarget": "apps/boilerplate/src/client:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "apps/boilerplate/src/client:build"
+      }
+    },
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "apps/boilerplate/src/client/**/*.ts",
+          "apps/boilerplate/src/client/**/*.html"
+        ]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "apps/boilerplate/src/client/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
+    },
+    "serve-static": {
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "apps/boilerplate/src/client:build"
+      }
+    }
+  }
+}
